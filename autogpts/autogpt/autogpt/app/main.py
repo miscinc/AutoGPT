@@ -49,11 +49,6 @@ from .utils import (
     print_python_version_info,
 )
 from .agent_protocol_server import AgentProtocolServer
-import json
-from http.server import BaseHTTPRequestHandler, HTTPServer
-
-
-
 
 @coroutine
 async def run_auto_gpt(
@@ -337,7 +332,7 @@ async def run_auto_gpt_server(
     allow_downloads: bool = False,
     install_plugin_deps: bool = False,
 ):
-
+    from .agent_protocol_server import AgentProtocolServer
 
     config = ConfigBuilder.build_config_from_env()
 
@@ -713,32 +708,6 @@ async def get_user_feedback(
     return user_feedback, user_input, new_cycles_remaining
 
 
-class ThoughtsHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-        ai_name = "AI_NAME"  # Replace with the actual AI name
-        assistant_thoughts = {
-            "ai_name": ai_name,
-            "thoughts": {
-                "text": "THOUGHTS_TEXT",
-                "reasoning": "THOUGHTS_REASONING",
-                "plan": "THOUGHTS_PLAN",
-                "self_criticism": "THOUGHTS_CRITICISM",
-                "speak": "THOUGHTS_SPEAK"
-            }
-        }
-
-        self.wfile.write(json.dumps(assistant_thoughts).encode())
-
-def run_server():
-    server_address = ('', 8002)
-    httpd = HTTPServer(server_address, ThoughtsHandler)
-    print('Server running on port 8002...')
-    httpd.serve_forever()
-
 def print_assistant_thoughts(
     ai_name: str,
     assistant_reply_json_valid: dict,
@@ -792,8 +761,6 @@ def print_assistant_thoughts(
         else:
             print_attribute("SPEAK", assistant_thoughts_speak, title_color=Fore.YELLOW)
 
-run_server()
-
-
+#! ##############################################################################################################################
 def remove_ansi_escape(s: str) -> str:
     return s.replace("\x1B", "")
