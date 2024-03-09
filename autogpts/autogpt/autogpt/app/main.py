@@ -643,6 +643,8 @@ def update_user(
     )
 
 
+#! ##############################################################################################################################
+
 async def get_user_feedback(
     config: Config,
     ai_profile: AIProfile,
@@ -705,7 +707,7 @@ async def get_user_feedback(
 
     return user_feedback, user_input, new_cycles_remaining
 
-
+#! ##############################################################################################################################
 def print_assistant_thoughts(
     ai_name: str,
     assistant_reply_json_valid: dict,
@@ -759,6 +761,6 @@ def print_assistant_thoughts(
         else:
             print_attribute("SPEAK", assistant_thoughts_speak, title_color=Fore.YELLOW)
 
-
+#! ##############################################################################################################################
 def remove_ansi_escape(s: str) -> str:
     return s.replace("\x1B", "")
